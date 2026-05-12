@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>With Love From — Your bouquet, your way</title>
+<meta name="description" content="Build your bouquet flower by flower, in real time, guided by an AI assistant. Premium personalised flower delivery in Madrid.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+:root {
+  --burgundy: #722D3A;
+  --burgundy-dark: #4A1B25;
+  --burgundy-deep: #5A1F2C;
+  --cream: #FAF5EF;
+  --cream-warm: #F5EFE8;
+  --cream-deep: #F0E5D7;
+  --beige: #E8DFD3;
+  --beige-dark: #C4A88E;
+  --text-dark: #4A2530;
+  --text-mid: #8B7B6E;
+  --text-light: #C4B8AB;
+  --olive: #5F7A4D;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Inter', -apple-system, sans-serif;
+  --script: 'Pinyon Script', 'Brush Script MT', cursive;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--cream); color: var(--text-dark); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+/* NAV */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(250,245,239,0.92); backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(232,223,211,0.6);
+}
+.nav-logo { font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--burgundy); font-weight: 500; cursor: pointer; }
+.nav-links { display: flex; gap: 36px; align-items: center; }
+.nav-link { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dark); text-decoration: none; font-weight: 500; transition: color .2s; cursor: pointer; }
+.nav-link:hover { color: var(--burgundy); }
+.nav-cta { background: var(--burgundy); color: var(--cream); padding: 11px 24px; border-radius: 30px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; border: none; cursor: pointer; font-family: inherit; font-weight: 500; transition: all .3s; }
+.nav-cta:hover { background: var(--burgundy-dark); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(114,45,58,.25); }
+
+/* HERO */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: 120px 48px 80px; position: relative; overflow: hidden;
+}
+.hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.hero-bg-img {
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0.18; filter: blur(2px);
+}
+.hero-bg-fallback { width: 100%; height: 100%; background: radial-gradient(ellipse at 70% 50%, rgba(114,45,58,.08) 0%, transparent 70%); }
+.hero-content {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  position: relative; z-index: 1; width: 100%;
+}
+.hero-eyebrow { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-mid); margin-bottom: 28px; display: flex; align-items: center; gap: 14px; }
+.hero-eyebrow::before { content: ''; width: 30px; height: 1px; background: var(--burgundy); }
+.hero-title { font-family: var(--serif); font-size: 72px; line-height: 1.04; color: var(--burgundy); font-weight: 400; letter-spacing: -1.5px; margin-bottom: 30px; }
+.hero-title em { font-style: italic; font-weight: 300; }
+.hero-subtitle { font-family: var(--serif); font-size: 21px; font-style: italic; color: var(--text-dark); line-height: 1.55; margin-bottom: 42px; font-weight: 300; max-width: 500px; }
+.hero-cta-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.btn-primary { background: var(--burgundy); color: var(--cream); padding: 17px 36px; border-radius: 32px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; border: none; cursor: pointer; font-family: inherit; font-weight: 500; transition: all .3s; text-decoration: none; display: inline-block; }
+.btn-primary:hover { background: var(--burgundy-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(114,45,58,.3); }
+.btn-secondary { background: transparent; color: var(--burgundy); padding: 16px 28px; border-radius: 32px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; border: 1px solid var(--burgundy); cursor: pointer; font-family: inherit; font-weight: 500; transition: all .3s; text-decoration: none; display: inline-block; }
+.btn-secondary:hover { background: var(--burgundy); color: var(--cream); }
+.hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+.hero-photo { width: 100%; max-width: 460px; height: 560px; object-fit: cover; border-radius: 220px 220px 180px 180px; filter: drop-shadow(0 30px 60px rgba(114,45,58,.18)); animation: float 6s ease-in-out infinite; }
+.hero-svg-fallback { width: 100%; max-width: 460px; animation: float 6s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+/* SECTIONS */
+.section { padding: 120px 48px; }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.section-eyebrow { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--burgundy); margin-bottom: 18px; display: flex; align-items: center; gap: 12px; justify-content: center; }
+.section-eyebrow::before,.section-eyebrow::after { content: ''; width: 30px; height: 1px; background: var(--burgundy); opacity: .4; }
+.section-title { font-family: var(--serif); font-size: 54px; line-height: 1.1; color: var(--burgundy); font-weight: 400; letter-spacing: -.8px; text-align: center; margin-bottom: 20px; }
+.section-title em { font-style: italic; font-weight: 300; }
+.section-lead { font-family: var(--serif); font-size: 21px; font-style: italic; color: var(--text-dark); line-height: 1.6; max-width: 680px; margin: 0 auto 70px; text-align: center; font-weight: 300; }
+
+/* HOW IT WORKS */
+.section-how { background: var(--cream-warm); }
+.steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 60px; }
+.step-card { text-align: center; }
+.step-number { font-family: var(--serif); font-style: italic; font-size: 80px; color: var(--burgundy); opacity: .15; line-height: 1; margin-bottom: -28px; font-weight: 300; }
+.step-icon { width: 90px; height: 90px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; }
+.step-title { font-family: var(--serif); font-size: 28px; color: var(--burgundy); margin-bottom: 12px; font-weight: 500; }
+.step-desc { font-size: 15px; color: var(--text-dark); line-height: 1.7; max-width: 300px; margin: 0 auto; }
+
+/* DIFFERENTIATORS */
+.section-diff { background: var(--cream); }
+.diff-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 70px 80px; }
+.diff-num { font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--burgundy); letter-spacing: 2px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+.diff-num::before { content: ''; width: 22px; height: 1px; background: var(--burgundy); }
+.diff-title { font-family: var(--serif); font-size: 34px; color: var(--burgundy); margin-bottom: 14px; font-weight: 500; line-height: 1.2; }
+.diff-desc { font-size: 15px; color: var(--text-dark); line-height: 1.75; }
+
+/* BUILDER SECTION (formerly demo section) */
+.section-builder { background: var(--cream-warm); padding-bottom: 100px; }
+.builder-wrap { max-width: 860px; margin: 0 auto; background: var(--cream); border-radius: 28px; box-shadow: 0 20px 60px rgba(74,37,48,.1); overflow: hidden; }
+.builder-inner { padding: 48px 48px 40px; }
+
+/* Step progress */
+.progress-bar { display: flex; gap: 6px; margin-bottom: 40px; }
+.progress-step { flex: 1; height: 3px; background: var(--beige); border-radius: 2px; transition: background .3s; cursor: pointer; }
+.progress-step.done { background: var(--burgundy); opacity: .45; }
+.progress-step.active { background: var(--burgundy); }
+.progress-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-mid); margin-bottom: 28px; }
+
+/* Builder content */
+.builder-content { min-height: 420px; }
+.builder-title { font-family: var(--serif); font-size: 36px; color: var(--burgundy); margin-bottom: 8px; font-weight: 500; }
+.builder-subtitle { font-size: 13px; color: var(--text-mid); margin-bottom: 28px; line-height: 1.5; }
+
+/* Flower grid */
+.flower-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-bottom: 20px; }
+.flower-card {
+  border: 1.5px solid var(--beige); border-radius: 14px; padding: 10px 8px 10px;
+  text-align: center; cursor: pointer; transition: all .22s; background: var(--cream);
+  position: relative;
+}
+.flower-card:hover { border-color: var(--burgundy); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(114,45,58,.1); }
+.flower-card.sel { border-color: var(--burgundy); background: white; box-shadow: 0 4px 16px rgba(114,45,58,.14); }
+.flower-card.sel::after { content: '✓'; position: absolute; top: 6px; right: 8px; font-size: 10px; color: var(--burgundy); font-weight: 700; }
+.flower-img-wrap { width: 100%; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: linear-gradient(135deg,var(--cream),var(--cream-deep)); margin-bottom: 7px; display: flex; align-items: center; justify-content: center; }
+.flower-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.flower-img-wrap img.hidden { display: none; }
+.flower-svg-fb { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+.flower-name { font-size: 10px; font-weight: 500; color: var(--text-dark); line-height: 1.2; margin-bottom: 2px; }
+.flower-price { font-size: 10px; color: var(--text-mid); }
+.flower-category-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--burgundy); margin: 20px 0 10px; font-weight: 600; }
+
+/* Selection summary bar */
+.sel-bar { background: linear-gradient(135deg,var(--burgundy),var(--burgundy-deep)); color: var(--cream); padding: 16px 22px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
+.sel-bar-label { font-size: 10px; opacity: .8; letter-spacing: 1.5px; text-transform: uppercase; }
+.sel-bar-value { font-family: var(--serif); font-size: 26px; font-weight: 500; }
+.sel-bar-count { font-size: 11px; opacity: .75; }
+
+/* WRAP/VASE */
+.wrap-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.option-card { border: 1.5px solid var(--beige); border-radius: 14px; padding: 14px 10px 12px; text-align: center; cursor: pointer; transition: all .2s; background: var(--cream); }
+.option-card:hover { border-color: var(--burgundy); }
+.option-card.sel { border-color: var(--burgundy); background: white; box-shadow: 0 4px 14px rgba(114,45,58,.12); }
+.option-label { font-size: 11px; font-weight: 500; color: var(--text-dark); margin-top: 8px; }
+.option-price { font-size: 10px; color: var(--burgundy); }
+
+/* BOUQUET PREVIEW */
+.preview-canvas {
+  width: 100%; min-height: 440px; border-radius: 18px;
+  background: white; border: 1.5px solid var(--beige);
+  display: flex; align-items: flex-end; justify-content: center;
+  overflow: hidden; padding: 20px; position: relative;
+}
+.preview-flower-img {
+  position: absolute; object-fit: contain;
+  border-radius: 50%; filter: drop-shadow(0 4px 10px rgba(74,37,48,.15));
+  transition: all .4s cubic-bezier(.34,1.56,.64,1);
+}
+.preview-empty { color: var(--text-light); font-family: var(--serif); font-style: italic; font-size: 20px; text-align: center; padding: 60px 40px; }
+
+/* AI CHAT */
+.chat-area { background: white; border: 1.5px solid var(--beige); border-radius: 18px; padding: 20px; min-height: 300px; max-height: 340px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px; }
+.chat-area::-webkit-scrollbar { width: 4px; }
+.chat-area::-webkit-scrollbar-thumb { background: var(--beige); border-radius: 2px; }
+.msg-ai { background: linear-gradient(135deg,var(--burgundy),var(--burgundy-deep)); color: var(--cream); padding: 13px 17px; border-radius: 18px 18px 18px 4px; font-size: 13px; line-height: 1.55; max-width: 80%; align-self: flex-start; }
+.msg-user { background: var(--beige); color: var(--text-dark); padding: 12px 16px; border-radius: 18px 18px 4px 18px; font-size: 13px; max-width: 75%; align-self: flex-end; }
+.chat-input-row { display: flex; gap: 10px; }
+.chat-input { flex: 1; padding: 13px 18px; border: 1.5px solid var(--beige); border-radius: 26px; font-size: 13px; font-family: inherit; background: var(--cream); color: var(--text-dark); transition: border .2s; }
+.chat-input:focus { outline: none; border-color: var(--burgundy); }
+.chat-send { background: var(--burgundy); color: var(--cream); border: none; border-radius: 26px; padding: 13px 22px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; font-family: inherit; cursor: pointer; white-space: nowrap; transition: all .2s; }
+.chat-send:hover { background: var(--burgundy-dark); }
+.chat-suggestions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.chat-chip { background: transparent; border: 1px solid var(--burgundy); color: var(--burgundy); border-radius: 20px; padding: 7px 14px; font-size: 11px; cursor: pointer; font-family: inherit; transition: all .2s; }
+.chat-chip:hover { background: var(--burgundy); color: var(--cream); }
+
+/* DICTIONARY */
+.dict-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+.dict-card { background: white; border: 1.5px solid var(--beige); border-radius: 14px; padding: 14px; display: flex; gap: 14px; align-items: flex-start; transition: all .2s; }
+.dict-card:hover { border-color: var(--burgundy); }
+.dict-img { width: 56px; height: 56px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: linear-gradient(135deg,var(--cream),var(--cream-deep)); display: flex; align-items: center; justify-content: center; }
+.dict-img img { width: 100%; height: 100%; object-fit: cover; }
+.dict-img img.hidden { display: none; }
+.dict-name { font-family: var(--serif); font-size: 17px; color: var(--burgundy); font-style: italic; font-weight: 500; margin-bottom: 3px; }
+.dict-meaning { font-size: 12px; color: var(--text-dark); line-height: 1.5; margin-bottom: 3px; }
+.dict-meta { font-size: 10px; color: var(--text-mid); }
+
+/* TAG PREVIEW */
+.tag-container { display: flex; gap: 40px; align-items: flex-start; }
+.tag-preview-wrap { flex-shrink: 0; perspective: 900px; }
+.tag-card {
+  width: 230px; height: 145px;
+  background: var(--cream); border-radius: 5px;
+  box-shadow: 0 16px 40px rgba(74,37,48,.2);
+  transform: rotateY(-8deg) rotateX(3deg);
+  padding: 22px 24px; text-align: center;
+  border: 1px solid var(--beige); position: relative;
+  transition: all .5s ease;
+}
+.tag-card::before { content: ''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 14px; height: 14px; border-radius: 50%; background: var(--burgundy); opacity: .15; }
+.tag-card::after { content: ''; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; border-radius: 50%; background: var(--cream); border: 1px solid var(--burgundy); }
+.tag-title { font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--burgundy); margin-top: 18px; }
+.tag-name { font-family: var(--script); font-size: 36px; color: var(--text-dark); line-height: 1; margin-top: 4px; transition: all .3s; }
+.tag-form { flex: 1; }
+.tag-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-mid); margin-bottom: 6px; display: block; }
+.tag-input { width: 100%; padding: 12px 16px; border: 1.5px solid var(--beige); border-radius: 26px; font-size: 13px; font-family: inherit; background: white; color: var(--text-dark); margin-bottom: 16px; transition: border .2s; }
+.tag-input:focus { outline: none; border-color: var(--burgundy); }
+
+/* ORDER SUMMARY */
+.summary-card { background: white; border: 1.5px solid var(--beige); border-radius: 18px; padding: 22px; margin-bottom: 16px; }
+.summary-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px dashed var(--beige); font-size: 13px; color: var(--text-dark); }
+.summary-total { display: flex; justify-content: space-between; padding-top: 14px; font-family: var(--serif); font-size: 24px; color: var(--burgundy); font-weight: 500; }
+.tag-mini { background: var(--cream); border: 1px dashed var(--burgundy); border-radius: 10px; padding: 14px; text-align: center; margin-bottom: 18px; }
+
+/* CONFIRMED */
+.confirmed-wrap { text-align: center; padding: 20px 0; }
+.confirmed-tick { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg,var(--burgundy),var(--burgundy-dark)); margin: 0 auto 18px; display: flex; align-items: center; justify-content: center; }
+
+/* NAVIGATION */
+.builder-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--beige); }
+.nav-btn { background: transparent; border: 1.5px solid var(--beige); color: var(--text-dark); padding: 13px 28px; border-radius: 28px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-family: inherit; cursor: pointer; transition: all .2s; }
+.nav-btn:hover { border-color: var(--burgundy); color: var(--burgundy); }
+.nav-btn.primary { background: var(--burgundy); color: var(--cream); border-color: var(--burgundy); }
+.nav-btn.primary:hover { background: var(--burgundy-dark); border-color: var(--burgundy-dark); }
+.step-indicator { font-size: 11px; color: var(--text-mid); letter-spacing: 1px; }
+
+/* STORY section */
+.section-story { background: var(--burgundy); color: var(--cream); text-align: center; padding: 140px 48px; }
+.story-quote { font-family: var(--serif); font-size: 40px; font-style: italic; line-height: 1.45; max-width: 880px; margin: 0 auto 28px; font-weight: 300; }
+.story-attr { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; opacity: .65; }
+
+/* FOOTER */
+.footer { background: var(--cream); padding: 60px 48px 36px; border-top: 1px solid var(--beige); }
+.footer-inner { max-width: 1200px; margin: 0 auto; }
+.footer-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; flex-wrap: wrap; gap: 40px; }
+.footer-brand { font-family: var(--serif); font-style: italic; font-size: 30px; color: var(--burgundy); margin-bottom: 8px; }
+.footer-tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-mid); }
+.footer-col h4 { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--burgundy); margin-bottom: 14px; font-weight: 600; }
+.footer-col a,.footer-col p { font-size: 13px; color: var(--text-dark); line-height: 2; text-decoration: none; display: block; }
+.footer-col a:hover { color: var(--burgundy); }
+.footer-bottom { padding-top: 28px; border-top: 1px solid var(--beige); display: flex; justify-content: space-between; font-size: 11px; color: var(--text-mid); flex-wrap: wrap; gap: 10px; }
+.footer-academic { font-style: italic; font-family: var(--serif); font-size: 12px; }
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .nav{padding:14px 20px} .nav-links{display:none}
+  .hero{padding:90px 20px 60px} .hero-content{grid-template-columns:1fr;gap:40px;text-align:center}
+  .hero-eyebrow{justify-content:center} .hero-title{font-size:46px} .hero-subtitle{font-size:17px}
+  .hero-cta-row{justify-content:center}
+  .section{padding:80px 20px} .section-title{font-size:36px} .section-lead{font-size:17px;margin-bottom:48px}
+  .steps-grid{grid-template-columns:1fr;gap:48px} .diff-grid{grid-template-columns:1fr;gap:48px}
+  .flower-grid{grid-template-columns:repeat(3,1fr)}
+  .builder-inner{padding:28px 20px 24px}
+  .dict-grid{grid-template-columns:1fr}
+  .tag-container{flex-direction:column}
+  .wrap-grid{grid-template-columns:repeat(2,1fr)}
+  .section-story{padding:80px 20px} .story-quote{font-size:24px}
+  .footer{padding:48px 20px 28px} .footer-top{flex-direction:column}
+}
+@media(max-width:480px){.flower-grid{grid-template-columns:repeat(2,1fr)} .hero-title{font-size:38px}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<radialGradient id="g1"><stop offset="0%" stop-color="#F4D5DD"/><stop offset="60%" stop-color="#D4A5B0"/><stop offset="100%" stop-color="#9B5A6B"/></radialGradient>
+<radialGradient id="g2"><stop offset="0%" stop-color="#A04050"/><stop offset="60%" stop-color="#722D3A"/><stop offset="100%" stop-color="#3F1620"/></radialGradient>
+<radialGradient id="g3"><stop offset="0%" stop-color="#FFF"/><stop offset="60%" stop-color="#F4E8D8"/><stop offset="100%" stop-color="#C4A88E"/></radialGradient>
+<radialGradient id="g4"><stop offset="0%" stop-color="#FAF0E8"/><stop offset="100%" stop-color="#D4A5B0"/></radialGradient>
+<radialGradient id="g5"><stop offset="0%" stop-color="#FFF"/><stop offset="100%" stop-color="#E8DFD3"/></radialGradient>
+<radialGradient id="g6"><stop offset="0%" stop-color="#FFF4D6"/><stop offset="100%" stop-color="#D4A85A"/></radialGradient>
+<radialGradient id="g7"><stop offset="0%" stop-color="#F4D5DD"/><stop offset="100%" stop-color="#9B7B8E"/></radialGradient>
+<radialGradient id="g8"><stop offset="0%" stop-color="#C4D5E0"/><stop offset="100%" stop-color="#5F7A8E"/></radialGradient>
+<radialGradient id="g9"><stop offset="0%" stop-color="#FFE8D6"/><stop offset="100%" stop-color="#E8A070"/></radialGradient>
+<radialGradient id="g10"><stop offset="0%" stop-color="#FFD6E0"/><stop offset="100%" stop-color="#FF8FA3"/></radialGradient>
+<radialGradient id="g11"><stop offset="0%" stop-color="#FFF0F3"/><stop offset="100%" stop-color="#FFAEC0"/></radialGradient>
+<radialGradient id="g12"><stop offset="0%" stop-color="#FFE5B4"/><stop offset="100%" stop-color="#FFB347"/></radialGradient>
+<radialGradient id="g13"><stop offset="0%" stop-color="#E8F4D0"/><stop offset="100%" stop-color="#90C050"/></radialGradient>
+<radialGradient id="g14"><stop offset="0%" stop-color="#FFE8F4"/><stop offset="100%" stop-color="#E878B4"/></radialGradient>
+<radialGradient id="g15"><stop offset="0%" stop-color="#FFF8E1"/><stop offset="100%" stop-color="#FFD54F"/></radialGradient>
+<linearGradient id="gl1" x2="0" y2="1"><stop offset="0%" stop-color="#9FAB87"/><stop offset="100%" stop-color="#5F7A4D"/></linearGradient>
+<linearGradient id="gl2" x2="0" y2="1"><stop offset="0%" stop-color="#B8CCAA"/><stop offset="100%" stop-color="#6B8C50"/></linearGradient>
+<linearGradient id="gl3" x2="0" y2="1"><stop offset="0%" stop-color="#C8D8B0"/><stop offset="100%" stop-color="#7A9E65"/></linearGradient>
+<linearGradient id="gl4" x2="0" y2="1"><stop offset="0%" stop-color="#D0C8A8"/><stop offset="100%" stop-color="#8C8050"/></linearGradient>
+<linearGradient id="gp1" x2="0" y2="1"><stop offset="0%" stop-color="#F4E8D8"/><stop offset="100%" stop-color="#C4A88E"/></linearGradient>
+<linearGradient id="gv1" x2="0" y2="1"><stop offset="0%" stop-color="#F4E8D8"/><stop offset="100%" stop-color="#9B7B6E"/></linearGradient>
+<linearGradient id="gv2" x2="0" y2="1"><stop offset="0%" stop-color="#D4A8C0"/><stop offset="100%" stop-color="#8B5A75"/></linearGradient>
+<linearGradient id="gv3" x2="0" y2="1"><stop offset="0%" stop-color="#FFF"/><stop offset="100%" stop-color="#C4D5E0"/></linearGradient>
+<linearGradient id="gv4" x2="0" y2="1"><stop offset="0%" stop-color="#5A4540"/><stop offset="100%" stop-color="#1A0F0A"/></linearGradient>
+</defs></svg>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">With Love From</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#how">How it works</a>
+    <a class="nav-link" href="#builder">Build a bouquet</a>
+    <a class="nav-link" href="#story">Our story</a>
+    <button class="nav-cta" onclick="goToBuilder()">Start your bouquet</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="images/hero/hero.jpg" alt="" class="hero-bg-img" onerror="this.style.display='none'">
+    <div class="hero-bg-fallback"></div>
+  </div>
+  <div class="hero-content">
+    <div>
+      <div class="hero-eyebrow">Premium personalised gifting · Madrid</div>
+      <h1 class="hero-title">Where others ask you to <em>choose,</em> we invite you to <em>create.</em></h1>
+      <p class="hero-subtitle">Build your bouquet flower by flower, in real time — guided by an AI assistant that knows what pairs well, what's in season, and what makes a moment unforgettable.</p>
+      <div class="hero-cta-row">
+        <button class="btn-primary" onclick="goToBuilder()">Start your bouquet</button>
+        <a class="btn-secondary" href="#how">How it works</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img src="images/hero/bouquet.jpg" alt="A handcrafted bouquet by With Love From" class="hero-photo" onerror="this.style.display='none';document.getElementById('hero-svg').style.display='block'">
+      <svg id="hero-svg" class="hero-svg-fallback" style="display:none" viewBox="0 0 400 460" id="hero-bouquet-svg"></svg>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="section section-how">
+  <div class="section-inner">
+    <div class="section-eyebrow">How it works</div>
+    <h2 class="section-title">A florist's shop, <em>on your phone.</em></h2>
+    <p class="section-lead">Three steps. No catalogues. No pre-designed bouquets. Just your choices, brought to life.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">01</div>
+        <div class="step-icon"><svg viewBox="0 0 80 80" width="80" height="80" id="icon-1"></svg></div>
+        <h3 class="step-title">Choose your flowers</h3>
+        <p class="step-desc">Pick each stem individually — peonies, tulips, eucalyptus, dahlias, whatever speaks to you. Over 40 options, changing with the season.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">02</div>
+        <div class="step-icon"><svg viewBox="0 0 80 80" width="80" height="80" id="icon-2"></svg></div>
+        <h3 class="step-title">See it take shape</h3>
+        <p class="step-desc">Your bouquet builds on screen in real time. Colours, proportions, price — all updating as you go. What you see is exactly what arrives.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">03</div>
+        <div class="step-icon"><svg viewBox="0 0 80 80" width="80" height="80" id="icon-3"></svg></div>
+        <h3 class="step-title">Send with love</h3>
+        <p class="step-desc">Sign your handwritten tag, choose same-day delivery, and a Madrid florist assembles and delivers within hours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFERENTIATORS -->
+<section class="section section-diff">
+  <div class="section-inner">
+    <div class="section-eyebrow">What makes us different</div>
+    <h2 class="section-title">No one else does <em>this</em> in Spain.</h2>
+    <p class="section-lead">Every competitor offers a catalogue. We offer a canvas.</p>
+    <div class="diff-grid">
+      <div>
+        <div class="diff-num">— No. 01</div>
+        <h3 class="diff-title">Real-time bouquet builder</h3>
+        <p class="diff-desc">Other platforms show you a catalogue of finished arrangements. We give you a blank canvas. Every stem you add updates the visual and the price in real time — so what you see is exactly what arrives.</p>
+      </div>
+      <div>
+        <div class="diff-num">— No. 02</div>
+        <h3 class="diff-title">AI guidance, not pushy automation</h3>
+        <p class="diff-desc">Our assistant works like asking the florist a quick question. What pairs with burgundy peonies? What's in season in March? Helpful, contextual, never overwhelming. You stay in control.</p>
+      </div>
+      <div>
+        <div class="diff-num">— No. 03</div>
+        <h3 class="diff-title">A keepsake that outlasts the flowers</h3>
+        <p class="diff-desc">Every bouquet arrives with a handwritten "With Love From ___" tag. A small detail that stays long after the flowers don't — because the gift was never just about the flowers.</p>
+      </div>
+      <div>
+        <div class="diff-num">— No. 04</div>
+        <h3 class="diff-title">Madrid florists, same-day</h3>
+        <p class="diff-desc">Orders before 14:00 arrive the same day. Every bouquet is assembled fresh by a professional florist partner in your district — no warehouse, no standing stock, no compromise on quality.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILDER -->
+<section id="builder" class="section section-builder">
+  <div class="section-inner">
+    <div class="section-eyebrow">Try it yourself</div>
+    <h2 class="section-title">Build a bouquet, <em>right now.</em></h2>
+    <p class="section-lead">This is the live experience — the same one we're bringing to Madrid in September 2026.</p>
+    <div class="builder-wrap">
+      <div class="builder-inner">
+        <div class="progress-bar" id="progress-bar"></div>
+        <div class="progress-label" id="progress-label"></div>
+        <div class="builder-content" id="builder-content"></div>
+        <div class="builder-nav">
+          <button class="nav-btn" id="btn-back" onclick="prevStep()">← Back</button>
+          <span class="step-indicator" id="step-indicator"></span>
+          <button class="nav-btn primary" id="btn-next" onclick="nextStep()">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section id="story" class="section-story">
+  <div class="section-eyebrow" style="color:var(--cream);opacity:.55;justify-content:center;display:flex;align-items:center;gap:12px;margin-bottom:30px">
+    <span style="width:30px;height:1px;background:var(--cream);opacity:.4;display:block"></span>
+    Our story
+    <span style="width:30px;height:1px;background:var(--cream);opacity:.4;display:block"></span>
+  </div>
+  <p class="story-quote">"Buying flowers used to mean walking into a shop, picking each stem one by one, watching something take shape in your hands. Online, that experience disappeared. We built With Love From to bring it back."</p>
+  <p class="story-attr">— The founding idea</p>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">With Love From</div>
+        <div class="footer-tag">Your bouquet, your way · Madrid</div>
+      </div>
+      <div class="footer-col">
+        <h4>The platform</h4>
+        <a href="#how">How it works</a>
+        <a href="#builder">Build a bouquet</a>
+        <a href="#builder">Flower dictionary</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#story">Our story</a>
+        <a href="#">For florists</a>
+        <a href="#">Press</a>
+      </div>
+      <div class="footer-col">
+        <h4>Madrid</h4>
+        <p>hello@withlovefrom.es</p>
+        <p>Same-day delivery</p>
+        <p>Orders before 14:00</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 With Love From · Made in Madrid</div>
+      <div class="footer-academic">Academic demo · Bachelor Thesis · UC3M 2026</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============ SVG FLOWER FUNCTIONS ============
+function peony(cx,cy,s,g){let o='';for(let i=0;i<8;i++){const a=i*45*Math.PI/180,x=cx+Math.cos(a)*s*13,y=cy+Math.sin(a)*s*13;o+=`<ellipse cx="${x}" cy="${y}" rx="${s*12}" ry="${s*15}" fill="url(#${g})" opacity="0.85" transform="rotate(${i*45} ${x} ${y})"/>`}for(let i=0;i<5;i++){const a=(i*72+15)*Math.PI/180,x=cx+Math.cos(a)*s*7,y=cy+Math.sin(a)*s*7;o+=`<ellipse cx="${x}" cy="${y}" rx="${s*9}" ry="${s*11}" fill="url(#${g})"/>`}o+=`<circle cx="${cx}" cy="${cy}" r="${s*7}" fill="url(#${g})"/><circle cx="${cx-s*2}" cy="${cy-s*2}" r="${s*3}" fill="#FFF" opacity="0.4"/>`;return o}
+function tulip(cx,cy,s,g){const w=16*s,h=22*s;return `<path d="M${cx-w/2} ${cy} Q${cx-w/2} ${cy-h*.7} ${cx-w*.35} ${cy-h*.95} Q${cx-w*.15} ${cy-h*.6} ${cx} ${cy-h*.85} Q${cx+w*.15} ${cy-h*.6} ${cx+w*.35} ${cy-h*.95} Q${cx+w/2} ${cy-h*.7} ${cx+w/2} ${cy} Z" fill="url(#${g})"/><ellipse cx="${cx-w*.15}" cy="${cy-h*.7}" rx="${w*.08}" ry="${h*.15}" fill="#FFF" opacity="0.3"/>`}
+function rose(cx,cy,s,g){const r=18*s;return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#${g})"/><path d="M${cx-r*.4} ${cy} Q${cx} ${cy-r*.6} ${cx+r*.4} ${cy} Q${cx} ${cy+r*.4} ${cx-r*.4} ${cy} Z" fill="#9B5A6B" opacity="0.35"/><ellipse cx="${cx-r*.3}" cy="${cy-r*.3}" rx="${r*.2}" ry="${r*.15}" fill="#FFF" opacity="0.4"/>`}
+function hydrangea(cx,cy,s,g){let o='';[[-8,-5],[8,-5],[0,-10],[-10,5],[10,5],[0,8],[-5,0],[5,0],[0,0],[-6,8],[6,8]].forEach(([x,y])=>{o+=`<circle cx="${cx+x*s}" cy="${cy+y*s}" r="${4*s}" fill="url(#${g})"/>`});return o}
+function euc(cx,cy,s,d){let o='';for(let i=0;i<6;i++){const x=cx+(i-2.5)*5*s*d*.35,y=cy-i*4*s;o+=`<ellipse cx="${x}" cy="${y}" rx="${3*s}" ry="${5*s}" fill="url(#gl1)" transform="rotate(${d*28} ${x} ${y})"/>`}return o}
+function gyp(cx,cy,s){let o='';[[-6,-4],[6,-3],[0,-8],[-3,2],[5,3],[-8,4],[8,5],[0,5],[3,-2],[-4,8],[7,-2]].forEach(([x,y])=>{o+=`<circle cx="${cx+x*s}" cy="${cy+y*s}" r="${1.8*s}" fill="#FFF" stroke="#7B9461" stroke-width="0.4"/>`});return o}
+function ran(cx,cy,s){let o='';for(let r=0;r<3;r++){const rr=14*s*(.9-r*.25);for(let i=0;i<8;i++){const a=(i*45+r*22.5)*Math.PI/180,x=cx+Math.cos(a)*rr*.4,y=cy+Math.sin(a)*rr*.4;o+=`<circle cx="${x}" cy="${y}" r="${rr*.35}" fill="#E8B0A0" opacity="0.85"/>`}}o+=`<circle cx="${cx}" cy="${cy}" r="${3*s}" fill="#9B5A6B"/>`;return o}
+function dah(cx,cy,s,g){let o='';for(let r=0;r<3;r++){const n=8+r*2;for(let i=0;i<n;i++){const a=(i*360/n+r*15)*Math.PI/180,d=18*s*(.85-r*.25),x=cx+Math.cos(a)*d,y=cy+Math.sin(a)*d;o+=`<ellipse cx="${x}" cy="${y}" rx="${s*3.6}" ry="${s*7}" fill="url(#${g})" opacity="${.85-r*.1}" transform="rotate(${i*360/n} ${x} ${y})"/>`}}o+=`<circle cx="${cx}" cy="${cy}" r="${s*4}" fill="#5A1F2C"/>`;return o}
+function ane(cx,cy,s){let o='';for(let i=0;i<6;i++){const a=i*60*Math.PI/180,x=cx+Math.cos(a)*9*s,y=cy+Math.sin(a)*9*s;o+=`<ellipse cx="${x}" cy="${y}" rx="${8*s}" ry="${11*s}" fill="url(#g5)" transform="rotate(${i*60+90} ${x} ${y})"/>`}o+=`<circle cx="${cx}" cy="${cy}" r="${5*s}" fill="#1A0F0A"/>`;return o}
+function lav(cx,cy,s){let o='';for(let i=0;i<8;i++)o+=`<ellipse cx="${cx+(i%2===0?-3:3)*s}" cy="${cy-2-i*4.5*s}" rx="${2.8*s}" ry="${4*s}" fill="#9B7B8E"/>`;return o}
+function gerbera(cx,cy,s,g){let o='';for(let i=0;i<14;i++){const a=i*360/14*Math.PI/180,x=cx+Math.cos(a)*14*s,y=cy+Math.sin(a)*14*s;o+=`<ellipse cx="${x}" cy="${y}" rx="${3*s}" ry="${8*s}" fill="url(#${g})" transform="rotate(${i*360/14} ${x} ${y})"/>`}o+=`<circle cx="${cx}" cy="${cy}" r="${5*s}" fill="#2C1F1A"/>`;return o}
+function lily(cx,cy,s,g){let o='';for(let i=0;i<6;i++){const a=i*60*Math.PI/180,x=cx+Math.cos(a)*12*s,y=cy+Math.sin(a)*12*s;o+=`<ellipse cx="${x}" cy="${y}" rx="${6*s}" ry="${14*s}" fill="url(#${g})" opacity="0.9" transform="rotate(${i*60} ${x} ${y})"/>`}o+=`<circle cx="${cx}" cy="${cy}" r="${4*s}" fill="#FFD700" opacity="0.8"/>`;return o}
+function lisianthus(cx,cy,s,g){let o='';for(let i=0;i<5;i++){const a=i*72*Math.PI/180,x=cx+Math.cos(a)*10*s,y=cy+Math.sin(a)*10*s;o+=`<ellipse cx="${x}" cy="${y}" rx="${8*s}" ry="${12*s}" fill="url(#${g})" opacity="0.9" transform="rotate(${i*72} ${x} ${y})"/>`}o+=`<circle cx="${cx}" cy="${cy}" r="${4*s}" fill="url(#${g})"/>`;return o}
+function sunflower(cx,cy,s){let o='';for(let i=0;i<16;i++){const a=i*360/16*Math.PI/180,x=cx+Math.cos(a)*15*s,y=cy+Math.sin(a)*15*s;o+=`<ellipse cx="${x}" cy="${y}" rx="${3*s}" ry="${9*s}" fill="url(#g15)" transform="rotate(${i*360/16} ${x} ${y})"/>`}o+=`<circle cx="${cx}" cy="${cy}" r="${8*s}" fill="#3C2010"/>`;return o}
+function paniculata(cx,cy,s){let o='';const pts=[[-8,-6],[8,-4],[0,-10],[4,-2],[-4,2],[10,0],[-10,2],[2,6],[-6,8],[8,8],[0,10],[5,-8],[-3,-8],[12,-4],[-12,4]];pts.forEach(([x,y])=>{o+=`<circle cx="${cx+x*s}" cy="${cy+y*s}" r="${1.5*s}" fill="#FFF" opacity="0.9" stroke="#8B9461" stroke-width="0.3"/>`});return o}
+function monstera(cx,cy,s){return `<path d="M${cx} ${cy-18*s} Q${cx+14*s} ${cy-10*s} ${cx+16*s} ${cy+2*s} Q${cx+8*s} ${cy+14*s} ${cx} ${cy+16*s} Q${cx-8*s} ${cy+10*s} ${cx-12*s} ${cy-2*s} Q${cx-6*s} ${cy-14*s} ${cx} ${cy-18*s} Z" fill="url(#gl2)" opacity="0.9"/><path d="M${cx} ${cy-2*s} Q${cx+12*s} ${cy-8*s} ${cx+12*s} ${cy-14*s}" stroke="#4A6030" stroke-width="${1.5*s}" fill="none"/><path d="M${cx} ${cy-2*s} Q${cx-10*s} ${cy-6*s} ${cx-8*s} ${cy-14*s}" stroke="#4A6030" stroke-width="${1.5*s}" fill="none"/>`}
+function fern(cx,cy,s){let o='';for(let i=0;i<7;i++){const side=i%2===0?1:-1,y=cy-i*4*s,x=cx+side*3*s;o+=`<ellipse cx="${x+side*4*s}" cy="${y}" rx="${5*s}" ry="${3*s}" fill="url(#gl3)" opacity="0.85" transform="rotate(${side*20} ${x} ${y})"/>`}return o}
+function olive(cx,cy,s){let o='';for(let i=0;i<10;i++){const a=i*36*Math.PI/180,x=cx+Math.cos(a)*9*s,y=cy+Math.sin(a)*9*s;o+=`<ellipse cx="${x}" cy="${y}" rx="${2.5*s}" ry="${5*s}" fill="url(#gl4)" opacity="0.85" transform="rotate(${i*36} ${x} ${y})"/>`}return o}
+function statice(cx,cy,s){let o='';for(let i=0;i<12;i++){const a=i*30*Math.PI/180,x=cx+Math.cos(a)*10*s,y=cy+Math.sin(a)*10*s;o+=`<circle cx="${x}" cy="${y}" r="${2.5*s}" fill="#B8A8D8" opacity="0.9"/>`}o+=`<circle cx="${cx}" cy="${cy}" r="${3*s}" fill="#9080C0"/>`;return o}
+function thistle(cx,cy,s){let o='';for(let i=0;i<8;i++){const a=i*45*Math.PI/180,x=cx+Math.cos(a)*9*s,y=cy+Math.sin(a)*9*s;o+=`<ellipse cx="${x}" cy="${y}" rx="${2*s}" ry="${6*s}" fill="#7080B0" opacity="0.8" transform="rotate(${i*45} ${x} ${y})"/>`}o+=`<circle cx="${cx}" cy="${cy}" r="${5*s}" fill="#9090C8"/>`;return o}
+function rosemary(cx,cy,s){let o='';for(let i=0;i<12;i++){const side=i%2===0?1:-1,y=cy-i*3*s;o+=`<ellipse cx="${cx+side*3*s}" cy="${y}" rx="${1.5*s}" ry="${3.5*s}" fill="#6B8C4A" opacity="0.9"/>`}return o}
+function clove(cx,cy,s,g){let o='';for(let i=0;i<6;i++){const a=i*60*Math.PI/180,x=cx+Math.cos(a)*10*s,y=cy+Math.sin(a)*10*s;o+=`<ellipse cx="${x}" cy="${y}" rx="${5*s}" ry="${8*s}" fill="url(#${g})" opacity="0.88" transform="rotate(${i*60} ${x} ${y})"/>`}o+=`<circle cx="${cx}" cy="${cy}" r="${3*s}" fill="#FFEE88" opacity="0.7"/>`;return o}
+function alstro(cx,cy,s,g){let o='';for(let i=0;i<5;i++){const a=(i*72-18)*Math.PI/180,x=cx+Math.cos(a)*11*s,y=cy+Math.sin(a)*11*s;o+=`<ellipse cx="${x}" cy="${y}" rx="${5*s}" ry="${10*s}" fill="url(#${g})" opacity="0.9" transform="rotate(${i*72} ${x} ${y})"/>`}o+=`<circle cx="${cx}" cy="${cy}" r="${3.5*s}" fill="#FFEE88" opacity="0.8"/>`;return o}
+
+// HERO SVG fallback
+document.getElementById('hero-svg').innerHTML = `
+  <path d="M170 250 Q175 330 180 440" stroke="#4A5F3A" stroke-width="3" fill="none"/>
+  <path d="M200 240 Q200 330 200 440" stroke="#4A5F3A" stroke-width="3" fill="none"/>
+  <path d="M230 250 Q228 330 225 440" stroke="#4A5F3A" stroke-width="3" fill="none"/>
+  <path d="M145 265 Q148 340 150 440" stroke="#4A5F3A" stroke-width="2.5" fill="none"/>
+  <path d="M255 265 Q258 340 260 440" stroke="#4A5F3A" stroke-width="2.5" fill="none"/>
+  ${euc(115,260,1.6,-1)}${euc(290,265,1.6,1)}
+  ${peony(170,205,2,'g1')}${peony(232,195,2.2,'g2')}${peony(200,228,1.8,'g1')}
+  ${peony(145,242,1.6,'g3')}${peony(258,248,1.7,'g2')}
+  ${tulip(182,280,1.4,'g4')}${tulip(222,286,1.4,'g4')}
+  ${gyp(168,168,1.9)}${gyp(248,162,1.9)}${gyp(207,152,1.7)}
+  <path d="M98 440 L302 440 L296 406 Q250 396 200 396 Q150 396 104 406 Z" fill="url(#gp1)" stroke="#8B7B6E" stroke-width="0.7"/>
+  <line x1="108" y1="412" x2="292" y2="412" stroke="#5A4540" stroke-width="0.7" stroke-dasharray="3,4"/>
+  <line x1="112" y1="422" x2="288" y2="422" stroke="#5A4540" stroke-width="0.7" stroke-dasharray="3,4"/>
+  <line x1="116" y1="432" x2="284" y2="432" stroke="#5A4540" stroke-width="0.7" stroke-dasharray="3,4"/>
+`;
+
+// Step icons
+document.getElementById('icon-1').innerHTML = `${peony(22,32,.7,'g1')}${peony(40,28,.8,'g2')}${tulip(58,45,1,'g4')}${gyp(35,18,.9)}<rect x="5" y="55" width="70" height="20" rx="4" fill="url(#gp1)" opacity=".6"/>`;
+document.getElementById('icon-2').innerHTML = `<rect x="5" y="5" width="70" height="55" rx="8" fill="white" stroke="#E8DFD3" stroke-width="1.5"/>${peony(28,30,.7,'g1')}${peony(50,28,.75,'g2')}${tulip(38,42,.8,'g4')}${gyp(20,18,.7)}<path d="M10 58 L70 58 L68 70 Q40 67 12 70 Z" fill="url(#gp1)"/>`;
+document.getElementById('icon-3').innerHTML = `<rect x="15" y="18" width="50" height="38" rx="3" fill="#FAF5EF" stroke="#722D3A" stroke-width="1.5"/><circle cx="40" cy="12" r="3.5" fill="#722D3A"/><text x="40" y="36" font-family="Georgia,serif" font-style="italic" font-size="8" fill="#722D3A" text-anchor="middle">With Love</text><text x="40" y="50" font-family="Brush Script MT,cursive" font-size="12" fill="#4A2530" text-anchor="middle">From you</text>`;
+
+// ============ FLOWER CATALOGUE (~40 options) ============
+// Each flower: id, name, price, category, svgFn, svgArgs, imgFile, meaning, season, pairsWith
+const CATALOGUE = [
+  // ROSES
+  {id:'r-red',    name:'Red rose',      price:5.50, cat:'Roses',      svg:(x,y,s)=>rose(x,y,s,'g2'),   img:'rose-red.jpg',   meaning:'Passionate love, desire, respect.',     season:'Year-round', pairs:'Gypsophila, eucalyptus, lavender'},
+  {id:'r-pink',   name:'Pink rose',     price:5.00, cat:'Roses',      svg:(x,y,s)=>rose(x,y,s,'g1'),   img:'rose-pink.jpg',  meaning:'Grace, admiration, sweet affection.',   season:'Year-round', pairs:'Ranunculus, peonies, statice'},
+  {id:'r-white',  name:'White rose',    price:5.00, cat:'Roses',      svg:(x,y,s)=>rose(x,y,s,'g5'),   img:'rose-white.jpg', meaning:'Purity, innocence, new beginnings.',    season:'Year-round', pairs:'Eucalyptus, fern, lavender'},
+  {id:'r-cream',  name:'Cream rose',    price:5.00, cat:'Roses',      svg:(x,y,s)=>rose(x,y,s,'gp1'),  img:'rose-cream.jpg', meaning:'Charm, thoughtfulness, warmth.',        season:'Year-round', pairs:'Peonies, hydrangea, gypsophila'},
+  {id:'r-burg',   name:'Burgundy rose', price:5.50, cat:'Roses',      svg:(x,y,s)=>rose(x,y,s,'g2'),   img:'rose-burgundy.jpg', meaning:'Deep passion, beauty, courage.',     season:'Year-round', pairs:'Peonies, eucalyptus, ranunculus'},
+  {id:'r-orange', name:'Orange rose',   price:5.00, cat:'Roses',      svg:(x,y,s)=>rose(x,y,s,'g9'),   img:'rose-orange.jpg',meaning:'Enthusiasm, desire, fascination.',       season:'Year-round', pairs:'Sunflower, alstroemeria, statice'},
+  {id:'r-lav',    name:'Lavender rose', price:5.50, cat:'Roses',      svg:(x,y,s)=>rose(x,y,s,'g14'),  img:'rose-lavender.jpg',meaning:'Enchantment, love at first sight.',    season:'Year-round', pairs:'Lisianthus, gypsophila, statice'},
+  // PEONIES
+  {id:'p-pink',   name:'Pink peony',    price:6.50, cat:'Peonies',    svg:(x,y,s)=>peony(x,y,s,'g1'),  img:'peony-pink.jpg', meaning:'Romance, prosperity, good luck.',       season:'Apr–Jun', pairs:'Eucalyptus, gypsophila, ranunculus'},
+  {id:'p-burg',   name:'Burgundy peony',price:7.00, cat:'Peonies',    svg:(x,y,s)=>peony(x,y,s,'g2'),  img:'peony-burgundy.jpg',meaning:'Deep romance, passionate love.',       season:'Apr–Jun', pairs:'Cream roses, eucalyptus, gypsophila'},
+  {id:'p-cream',  name:'Cream peony',   price:6.50, cat:'Peonies',    svg:(x,y,s)=>peony(x,y,s,'g3'),  img:'peony-cream.jpg',meaning:'Femininity, bashfulness, compassion.',   season:'Apr–Jun', pairs:'Lavender, olive, fern'},
+  {id:'p-white',  name:'White peony',   price:6.50, cat:'Peonies',    svg:(x,y,s)=>peony(x,y,s,'g5'),  img:'peony-white.jpg',meaning:'Purity, happy marriage, honour.',         season:'Apr–Jun', pairs:'Gypsophila, statice, eucalyptus'},
+  // TULIPS
+  {id:'t-pink',   name:'Pink tulip',    price:4.00, cat:'Tulips',     svg:(x,y,s)=>tulip(x,y,s,'g4'),  img:'tulip-pink.jpg', meaning:'Affection, caring, happiness.',         season:'Feb–May', pairs:'Gypsophila, ranunculus, hydrangea'},
+  {id:'t-red',    name:'Red tulip',     price:4.00, cat:'Tulips',     svg:(x,y,s)=>tulip(x,y,s,'g2'),  img:'tulip-red.jpg',  meaning:'True love, declaration of feelings.',   season:'Feb–May', pairs:'White tulips, gypsophila, fern'},
+  {id:'t-white',  name:'White tulip',   price:3.50, cat:'Tulips',     svg:(x,y,s)=>tulip(x,y,s,'g5'),  img:'tulip-white.jpg',meaning:'Forgiveness, purity, worthiness.',       season:'Feb–May', pairs:'Pink tulips, paniculata, eucalyptus'},
+  {id:'t-yellow', name:'Yellow tulip',  price:3.50, cat:'Tulips',     svg:(x,y,s)=>tulip(x,y,s,'g15'), img:'tulip-yellow.jpg',meaning:'Cheerful thoughts, hopeful love.',       season:'Feb–May', pairs:'Orange roses, sunflower, fern'},
+  // HYDRANGEAS
+  {id:'h-pink',   name:'Pink hydrangea',price:5.50, cat:'Hydrangeas', svg:(x,y,s)=>hydrangea(x,y,s,'g7'),img:'hydrangea-pink.jpg',meaning:'Heartfelt emotion, gratitude.',    season:'Jun–Sep', pairs:'Cream roses, eucalyptus, gypsophila'},
+  {id:'h-blue',   name:'Blue hydrangea',price:5.50, cat:'Hydrangeas', svg:(x,y,s)=>hydrangea(x,y,s,'g8'),img:'hydrangea-blue.jpg',meaning:'Understanding, apology, serenity.', season:'Jun–Sep', pairs:'White roses, statice, fern'},
+  {id:'h-white',  name:'White hydrangea',price:5.50,cat:'Hydrangeas', svg:(x,y,s)=>hydrangea(x,y,s,'g5'),img:'hydrangea-white.jpg',meaning:'Purity, grace, abundance.',        season:'Jun–Sep', pairs:'Lavender roses, paniculata, eucalyptus'},
+  // DAHLIAS
+  {id:'d-burg',   name:'Burgundy dahlia',price:5.50,cat:'Dahlias',    svg:(x,y,s)=>dah(x,y,s,'g2'),    img:'dahlia-burgundy.jpg',meaning:'Elegance, dignity, commitment.',      season:'Jul–Oct', pairs:'Cream roses, gypsophila, olive'},
+  {id:'d-pink',   name:'Pink dahlia',   price:5.50, cat:'Dahlias',    svg:(x,y,s)=>dah(x,y,s,'g1'),    img:'dahlia-pink.jpg', meaning:'Kindness, grace, inner strength.',    season:'Jul–Oct', pairs:'Ranunculus, statice, eucalyptus'},
+  {id:'d-white',  name:'White dahlia',  price:5.00, cat:'Dahlias',    svg:(x,y,s)=>dah(x,y,s,'g5'),    img:'dahlia-white.jpg',meaning:'Purity, focus, positive change.',       season:'Jul–Oct', pairs:'Lavender, fern, gypsophila'},
+  // OTHER FLOWERS
+  {id:'rn',       name:'Ranunculus',    price:4.50, cat:'Other flowers',svg:(x,y,s)=>ran(x,y,s),        img:'ranunculus.jpg', meaning:'Charm, attractiveness, radiant charm.',season:'Jan–Apr', pairs:'Peonies, roses, gypsophila'},
+  {id:'an',       name:'White anemone', price:4.50, cat:'Other flowers',svg:(x,y,s)=>ane(x,y,s),        img:'anemone.jpg',    meaning:'Anticipation, protection, sincerity.', season:'Mar–May', pairs:'Eucalyptus, lisianthus, paniculata'},
+  {id:'lv',       name:'Lavender',      price:3.50, cat:'Other flowers',svg:(x,y,s)=>lav(x,y,s),         img:'lavender.jpg',   meaning:'Devotion, serenity, healing love.',    season:'May–Aug', pairs:'Roses, peonies, gypsophila'},
+  {id:'gr',       name:'Gerbera',       price:3.50, cat:'Other flowers',svg:(x,y,s)=>gerbera(x,y,s,'g10'),img:'gerbera.jpg',  meaning:'Cheerfulness, innocence, purity.',     season:'Year-round', pairs:'Tulips, alstroemeria, fern'},
+  {id:'ly',       name:'Lily',          price:5.00, cat:'Other flowers',svg:(x,y,s)=>lily(x,y,s,'g3'),   img:'lily.jpg',       meaning:'Purity of heart, elegance, renewal.',  season:'Year-round', pairs:'Eucalyptus, gypsophila, fern'},
+  {id:'ls',       name:'Lisianthus',    price:4.00, cat:'Other flowers',svg:(x,y,s)=>lisianthus(x,y,s,'g14'),img:'lisianthus.jpg',meaning:'Appreciation, gratitude, charisma.', season:'Jun–Sep', pairs:'Roses, paniculata, statice'},
+  {id:'al',       name:'Alstroemeria',  price:3.50, cat:'Other flowers',svg:(x,y,s)=>alstro(x,y,s,'g11'),img:'alstroemeria.jpg',meaning:'Friendship, devotion, mutual support.',season:'Year-round', pairs:'Roses, gypsophila, fern'},
+  {id:'cl',       name:'Pink carnation',price:3.00, cat:'Other flowers',svg:(x,y,s)=>clove(x,y,s,'g11'), img:'carnation-pink.jpg',meaning:'Admiration, love, pure affection.',  season:'Year-round', pairs:'Roses, paniculata, statice'},
+  {id:'sf',       name:'Sunflower',     price:4.50, cat:'Other flowers',svg:(x,y,s)=>sunflower(x,y,s),    img:'sunflower.jpg',  meaning:'Adoration, loyalty, longevity.',       season:'Jun–Sep', pairs:'Orange roses, alstroemeria, fern'},
+  // GREENS & FILLERS
+  {id:'eu',       name:'Eucalyptus',    price:2.50, cat:'Greens',     svg:(x,y,s)=>euc(x,y,s,1),        img:'eucalyptus.jpg', meaning:'Protection, wellbeing, calm.',          season:'Year-round', pairs:'Everything — the universal pairing'},
+  {id:'gy',       name:'Gypsophila',    price:2.00, cat:'Greens',     svg:(x,y,s)=>gyp(x,y,s),           img:'gypsophila.jpg', meaning:'Everlasting love, innocence, purity.', season:'Year-round', pairs:'Roses, peonies, dahlias'},
+  {id:'pn',       name:'Paniculata',    price:2.50, cat:'Greens',     svg:(x,y,s)=>paniculata(x,y,s),    img:'paniculata.jpg', meaning:'Light, delicacy, eternal love.',        season:'Year-round', pairs:'Lisianthus, hydrangea, anemone'},
+  {id:'fn',       name:'Fern',          price:2.00, cat:'Greens',     svg:(x,y,s)=>fern(x,y,s),           img:'fern.jpg',       meaning:'Sincerity, shelter, fascination.',      season:'Year-round', pairs:'Lilies, sunflowers, tulips'},
+  {id:'ol',       name:'Olive branches',price:3.00, cat:'Greens',     svg:(x,y,s)=>olive(x,y,s),          img:'olive.jpg',      meaning:'Peace, wisdom, victory.',               season:'Year-round', pairs:'Roses, peonies, dahlias'},
+  {id:'rm',       name:'Rosemary',      price:2.00, cat:'Greens',     svg:(x,y,s)=>rosemary(x,y,s),       img:'rosemary.jpg',   meaning:'Remembrance, fidelity, good luck.',    season:'Year-round', pairs:'Lavender roses, lisianthus, anemone'},
+  {id:'mn',       name:'Monstera',      price:3.50, cat:'Greens',     svg:(x,y,s)=>monstera(x,y,s),       img:'monstera.jpg',   meaning:'Uniqueness, maturity, independence.',   season:'Year-round', pairs:'Dahlias, anthuriums, gerbera'},
+  // SPECIAL & SEASONAL
+  {id:'st',       name:'Statice',       price:2.00, cat:'Seasonal',   svg:(x,y,s)=>statice(x,y,s),        img:'statice.jpg',    meaning:'Remembrance, sympathy, lasting beauty.',season:'Jun–Sep', pairs:'Roses, peonies, lavender'},
+  {id:'th',       name:'Blue thistle',  price:3.50, cat:'Seasonal',   svg:(x,y,s)=>thistle(x,y,s),        img:'thistle.jpg',    meaning:'Courage, strength, determination.',    season:'Jun–Sep', pairs:'Eucalyptus, white roses, gypsophila'},
+];
+
+// Wraps
+const WRAPS = [
+  {id:'striped',   name:'Striped kraft',     price:2.00, svgH:`<rect x="10" y="8" width="80" height="50" fill="url(#gp1)" rx="2"/><line x1="14" y1="12" x2="86" y2="12" stroke="#5A4540" stroke-width="0.8" stroke-dasharray="2,3"/><line x1="14" y1="20" x2="86" y2="20" stroke="#5A4540" stroke-width="0.8" stroke-dasharray="2,3"/><line x1="14" y1="28" x2="86" y2="28" stroke="#5A4540" stroke-width="0.8" stroke-dasharray="2,3"/><line x1="14" y1="36" x2="86" y2="36" stroke="#5A4540" stroke-width="0.8" stroke-dasharray="2,3"/><line x1="14" y1="44" x2="86" y2="44" stroke="#5A4540" stroke-width="0.8" stroke-dasharray="2,3"/>`},
+  {id:'plain',     name:'Plain kraft',       price:1.50, svgH:`<rect x="10" y="8" width="80" height="50" fill="#C4A88E" rx="2"/>`},
+  {id:'vintage',   name:'Vintage newspaper', price:2.50, svgH:`<rect x="10" y="8" width="80" height="50" fill="#FAF5EF" rx="2"/><text x="50" y="32" font-family="Times,serif" font-size="6" fill="#2C1F1A" text-anchor="middle">Le Monde · Madrid</text><line x1="14" y1="40" x2="86" y2="40" stroke="#5A4540" stroke-width="0.3"/>`},
+  {id:'floral',    name:'Floral pattern',    price:2.50, svgH:`<rect x="10" y="8" width="80" height="50" fill="#F4E8D8" rx="2"/><circle cx="25" cy="22" r="3" fill="#722D3A" opacity="0.3"/><circle cx="50" cy="28" r="3" fill="#722D3A" opacity="0.3"/><circle cx="75" cy="20" r="3" fill="#722D3A" opacity="0.3"/><circle cx="35" cy="42" r="3" fill="#722D3A" opacity="0.3"/><circle cx="65" cy="40" r="3" fill="#722D3A" opacity="0.3"/>`},
+  {id:'burgundy',  name:'Burgundy stripes',  price:2.00, svgH:`<rect x="10" y="8" width="80" height="50" fill="#FAF5EF" rx="2"/><line x1="22" y1="10" x2="22" y2="58" stroke="#722D3A" stroke-width="1.5"/><line x1="37" y1="10" x2="37" y2="58" stroke="#722D3A" stroke-width="1.5"/><line x1="52" y1="10" x2="52" y2="58" stroke="#722D3A" stroke-width="1.5"/><line x1="67" y1="10" x2="67" y2="58" stroke="#722D3A" stroke-width="1.5"/><line x1="82" y1="10" x2="82" y2="58" stroke="#722D3A" stroke-width="1.5"/>`},
+  {id:'black',     name:'Black stripes',     price:2.00, svgH:`<rect x="10" y="8" width="80" height="50" fill="#FAF5EF" rx="2"/><line x1="10" y1="18" x2="90" y2="18" stroke="#2C2C2A" stroke-width="0.8"/><line x1="10" y1="28" x2="90" y2="28" stroke="#2C2C2A" stroke-width="0.8"/><line x1="10" y1="38" x2="90" y2="38" stroke="#2C2C2A" stroke-width="0.8"/><line x1="10" y1="48" x2="90" y2="48" stroke="#2C2C2A" stroke-width="0.8"/>`},
+];
+const VASES = [
+  {id:'ivory',  name:'Ceramic ivory', price:18.00, svgH:`<path d="M15 20 L18 60 Q18 65 30 65 Q42 65 42 60 L45 20 Q45 18 30 18 Q15 18 15 20 Z" fill="url(#gv1)"/>`},
+  {id:'glass',  name:'Clear glass',   price:12.00, svgH:`<path d="M20 15 L20 60 Q20 65 30 65 Q40 65 40 60 L40 15 Q40 13 30 13 Q20 13 20 15 Z" fill="url(#gv3)" opacity="0.7"/>`},
+  {id:'pink',   name:'Pink ceramic',  price:22.00, svgH:`<path d="M22 20 L18 50 L20 65 Q20 67 30 67 Q40 67 40 65 L42 50 L38 20 Q38 18 30 18 Q22 18 22 20 Z" fill="url(#gv2)"/>`},
+  {id:'black',  name:'Matte black',   price:28.00, svgH:`<path d="M20 25 Q15 30 18 50 Q18 65 30 65 Q42 65 42 50 Q45 30 40 25 Q40 18 30 18 Q20 18 20 25 Z" fill="url(#gv4)"/>`},
+];
+
+// ============ STATE ============
+const state = {
+  flowers: [],
+  wrap: WRAPS[0],
+  vase: null,
+  signature: '',
+  message: '',
+};
+function flowerTotal(){ return state.flowers.reduce((s,f)=>s+f.price,0); }
+function total(){ return flowerTotal()+(state.wrap?state.wrap.price:0)+(state.vase?state.vase.price:0)+7; }
+
+// ============ STEPS ============
+let currentStep = 0;
+const STEPS = ['choose flowers','wrap & vase','your bouquet','AI assistant','your tag','order summary','confirmed'];
+
+function renderProgress(){
+  const pb = document.getElementById('progress-bar');
+  pb.innerHTML = STEPS.map((s,i)=>`<div class="progress-step${i<currentStep?' done':i===currentStep?' active':''}" onclick="if(${i}<${currentStep+1})goToStep(${i})" title="${s}"></div>`).join('');
+  document.getElementById('progress-label').textContent = STEPS[currentStep].toUpperCase();
+  document.getElementById('step-indicator').textContent = `${currentStep+1} / ${STEPS.length}`;
+  document.getElementById('btn-back').style.visibility = currentStep===0?'hidden':'visible';
+  const btnNext = document.getElementById('btn-next');
+  if(currentStep===STEPS.length-1){ btnNext.textContent='Build again'; btnNext.onclick=resetBuilder; }
+  else { btnNext.textContent='Next →'; btnNext.onclick=nextStep; }
+}
+
+function renderStep(){
+  renderProgress();
+  const content = document.getElementById('builder-content');
+  switch(currentStep){
+    case 0: content.innerHTML = renderFlowers(); break;
+    case 1: content.innerHTML = renderWrapVase(); break;
+    case 2: content.innerHTML = renderPreview(); break;
+    case 3: content.innerHTML = renderChat(); initChat(); break;
+    case 4: content.innerHTML = renderTag(); break;
+    case 5: content.innerHTML = renderSummary(); break;
+    case 6: content.innerHTML = renderConfirmed(); break;
+  }
+}
+function nextStep(){ if(currentStep<STEPS.length-1){ currentStep++; renderStep(); document.getElementById('builder').scrollIntoView({behavior:'smooth',block:'start'}); } }
+function prevStep(){ if(currentStep>0){ currentStep--; renderStep(); } }
+function goToStep(n){ currentStep=n; renderStep(); }
+function resetBuilder(){ state.flowers=[]; state.wrap=WRAPS[0]; state.vase=null; state.signature=''; state.message=''; currentStep=0; renderStep(); document.getElementById('builder').scrollIntoView({behavior:'smooth'}); }
+function goToBuilder(){ document.getElementById('builder').scrollIntoView({behavior:'smooth'}); }
+
+// ---- STEP 0: FLOWER SELECTION ----
+function renderFlowers(){
+  const cats = [...new Set(CATALOGUE.map(f=>f.cat))];
+  let html = `<div class="builder-title">Choose your flowers</div><div class="builder-subtitle">Select as many as you like — your bouquet price updates in real time.</div>`;
+  cats.forEach(cat=>{
+    html += `<div class="flower-category-label">${cat}</div><div class="flower-grid">`;
+    CATALOGUE.filter(f=>f.cat===cat).forEach(f=>{
+      const sel = state.flowers.some(x=>x.id===f.id);
+      const svgContent = f.svg(25,25,0.9);
+      html += `<div class="flower-card${sel?' sel':''}" id="fc-${f.id}" onclick="toggleFlower('${f.id}')">
+        <div class="flower-img-wrap">
+          <img src="images/flowers/${f.img}" alt="${f.name}" onerror="this.classList.add('hidden');this.nextElementSibling.style.display='flex'">
+          <div class="flower-svg-fb" style="display:none"><svg width="52" height="52" viewBox="0 0 50 50">${svgContent}</svg></div>
+        </div>
+        <div class="flower-name">${f.name}</div>
+        <div class="flower-price">€${f.price.toFixed(2)}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  html += `<div class="sel-bar"><div><div class="sel-bar-label">Your selection</div><div class="sel-bar-count">${state.flowers.length} stem${state.flowers.length!==1?'s':''}</div></div><div class="sel-bar-value" id="flower-total">€${flowerTotal().toFixed(2)}</div></div>`;
+  return html;
+}
+function toggleFlower(id){
+  const f = CATALOGUE.find(x=>x.id===id);
+  if(!f) return;
+  const idx = state.flowers.findIndex(x=>x.id===id);
+  if(idx>=0) state.flowers.splice(idx,1);
+  else state.flowers.push({...f});
+  const card = document.getElementById(`fc-${id}`);
+  if(card) card.classList.toggle('sel', state.flowers.some(x=>x.id===id));
+  const tot = document.getElementById('flower-total');
+  if(tot) tot.textContent = `€${flowerTotal().toFixed(2)}`;
+  const bar = document.querySelector('.sel-bar-count');
+  if(bar) bar.textContent = `${state.flowers.length} stem${state.flowers.length!==1?'s':''}`;
+}
+
+// ---- STEP 1: WRAP & VASE ----
+function renderWrapVase(){
+  const wrapCards = WRAPS.map(w=>{
+    const sel = state.wrap?.id===w.id;
+    return `<div class="option-card${sel?' sel':''}" onclick="selectWrap('${w.id}')">
+      <svg width="100%" height="66" viewBox="0 0 100 66">${w.svgH}</svg>
+      <div class="option-label">${w.name}</div>
+      <div class="option-price">€${w.price.toFixed(2)}</div>
+    </div>`;
+  }).join('');
+  const vaseCards = VASES.map(v=>{
+    const sel = state.vase?.id===v.id;
+    return `<div class="option-card${sel?' sel':''}" onclick="selectVase('${v.id}')">
+      <svg width="100%" height="80" viewBox="0 0 60 80">${v.svgH}</svg>
+      <div class="option-label">${v.name}</div>
+      <div class="option-price">€${v.price.toFixed(2)}</div>
+    </div>`;
+  }).join('');
+  return `
+    <div class="builder-title">Wrap or vase?</div>
+    <div class="builder-subtitle">Choose how your bouquet arrives.</div>
+    <div class="flower-category-label">Paper wraps</div>
+    <div class="wrap-grid">${wrapCards}</div>
+    <div class="flower-category-label" style="margin-top:20px">Vases (add-on)</div>
+    <div class="wrap-grid">${vaseCards}</div>
+  `;
+}
+function selectWrap(id){ state.wrap=WRAPS.find(w=>w.id===id); state.vase=null; document.querySelectorAll('.option-card').forEach(c=>c.classList.remove('sel')); event.currentTarget.classList.add('sel'); }
+function selectVase(id){ state.vase=state.vase?.id===id?null:VASES.find(v=>v.id===id); renderStep(); }
+
+// ---- STEP 2: BOUQUET PREVIEW ----
+function renderPreview(){
+  const flowers = state.flowers;
+  if(flowers.length===0){
+    return `<div class="builder-title">Your bouquet</div>
+      <div class="preview-canvas"><div class="preview-empty">← Go back and pick some flowers first</div></div>`;
+  }
+  // Positions for up to 20 flowers in the preview canvas
+  const positions = [
+    {x:50,y:50,size:80},{x:72,y:44,size:82},{x:28,y:44,size:78},
+    {x:50,y:70,size:76},{x:18,y:62,size:74},{x:82,y:62,size:74},
+    {x:60,y:28,size:72},{x:40,y:28,size:72},{x:8,y:44,size:68},
+    {x:92,y:44,size:68},{x:50,y:14,size:70},{x:72,y:78,size:70},
+    {x:28,y:78,size:70},{x:16,y:28,size:65},{x:84,y:28,size:65},
+    {x:50,y:86,size:65},{x:6,y:72,size:62},{x:94,y:72,size:62},
+    {x:38,y:10,size:60},{x:62,y:10,size:60}
+  ];
+  let previewHtml = '';
+  flowers.slice(0,20).forEach((f,i)=>{
+    const {x,y,size} = positions[i % positions.length];
+    const left = `${x}%`, top = `${y}%`;
+    const s = size;
+    previewHtml += `
+      <div style="position:absolute;left:${left};top:${top};transform:translate(-50%,-50%);width:${s}px;height:${s}px;z-index:${20-i}">
+        <img src="images/flowers/${f.img}" alt="${f.name}"
+          style="width:100%;height:100%;object-fit:cover;border-radius:50%;filter:drop-shadow(0 4px 12px rgba(74,37,48,.18))"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;border-radius:50%;background:var(--cream-deep)">
+          <svg width="${s*.8}" height="${s*.8}" viewBox="0 0 50 50">${f.svg(25,25,0.9)}</svg>
+        </div>
+      </div>`;
+  });
+  // Wrap label at the bottom
+  const wrapName = state.wrap ? state.wrap.name.toLowerCase() : '';
+  return `
+    <div class="builder-title">Your bouquet</div>
+    <div class="builder-subtitle">${flowers.length} stems${wrapName?` · ${wrapName} wrap`:''} · €${total().toFixed(2)} total</div>
+    <div class="preview-canvas" style="position:relative;min-height:420px">${previewHtml}</div>
+    <div class="sel-bar" style="margin-top:18px">
+      <span style="font-size:10px;opacity:.8;letter-spacing:1.5px;text-transform:uppercase">Your total so far</span>
+      <span style="font-family:var(--serif);font-size:26px;font-weight:500">€${total().toFixed(2)}</span>
+    </div>
+  `;
+}
+
+// ---- STEP 3: AI CHAT ----
+const RESPONSES = {
+  'peony':  ['Burgundy peonies are stunning paired with:<br>1. <b>Cream roses</b> — soften the depth<br>2. <b>Eucalyptus</b> — adds natural movement<br>3. <b>Gypsophila</b> — dreamy, romantic finish<br><br>Want me to add any of these?', ['+ Cream rose','+ Eucalyptus','+ Gypsophila']],
+  'rose':   ['Roses pair beautifully with almost everything. For a romantic feel, try adding <b>gypsophila</b> or <b>ranunculus</b>. For something more contemporary, <b>eucalyptus</b> and <b>olive branches</b> give structure and texture.', ['+ Gypsophila','+ Ranunculus','+ Eucalyptus']],
+  'season': ['Right now in Madrid, the best seasonal picks are:<br>🌸 <b>Peonies</b> (Apr–Jun) — peak season<br>🌷 <b>Tulips</b> (Feb–May) — still going<br>💐 <b>Ranunculus</b> (Jan–Apr) — beautiful and abundant<br><br>Anything catch your eye?', ['+ Peonies','+ Tulips','+ Ranunculus']],
+  'proposal': ['For a proposal bouquet, I\'d suggest building around <b>burgundy peonies</b> as the centrepiece — deep, passionate, unmistakable. Add <b>cream roses</b> to balance, <b>eucalyptus</b> for movement, and finish with <b>gypsophila</b> for that dreamy, celebratory feel.<br><br>Average ticket for a proposal bouquet: €75–90.', ['+ Burgundy peony','+ Cream rose','+ Eucalyptus']],
+  'colour': ['For a warm palette (burgundy, coral, peach), try: <b>burgundy peonies</b>, <b>orange roses</b>, <b>ranunculus</b>, and <b>olive branches</b>.<br><br>For a soft palette (blush, cream, white): <b>pink peonies</b>, <b>cream roses</b>, <b>white tulips</b>, and <b>gypsophila</b>.', ['+ Burgundy peony','+ Orange rose','+ Pink peony']],
+  'combine': ['A few combinations that always work:<br>🌹 Peonies + eucalyptus + gypsophila = romantic classic<br>🌷 Tulips + paniculata + fern = fresh and airy<br>💐 Dahlias + olive branches + statice = modern editorial', ['+ Peonies','+ Tulips','+ Dahlias']],
+  'default': ['I\'m here to help you build something beautiful. Try asking me:<br>• What goes with <i>peonies</i>?<br>• What\'s in <i>season</i> right now?<br>• Help me build a <i>proposal</i> bouquet<br>• What flowers work for a warm <i>colour</i> palette', []],
+};
+let chatHistory = [];
+function initChat(){
+  chatHistory = [{role:'ai',text:'Hi! I\'m your With Love AI assistant. Ask me anything — what pairs well with what, what\'s in season, or how to build around a particular occasion or colour palette.'}];
+  renderChat();
+}
+function renderChat(){
+  const msgs = chatHistory.map(m=>`<div class="msg-${m.role}">${m.text}</div>`).join('');
+  const suggestions = ['What pairs with peonies?','What\'s in season?','Help me with a proposal','Warm colour palette'];
+  return `
+    <div class="builder-title">With Love AI</div>
+    <div class="builder-subtitle">Ask anything about flowers, combinations, or occasions.</div>
+    <div class="chat-area" id="chat-area">${msgs}</div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chat-in" placeholder="Ask With Love AI..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send" onclick="sendChat()">Send</button>
+    </div>
+    <div class="chat-suggestions">
+      ${suggestions.map(s=>`<button class="chat-chip" onclick="sendChatMsg('${s}')">${s}</button>`).join('')}
+    </div>
+  `;
+}
+function sendChat(){
+  const inp = document.getElementById('chat-in');
+  if(!inp||!inp.value.trim()) return;
+  sendChatMsg(inp.value.trim());
+  inp.value='';
+}
+function sendChatMsg(text){
+  chatHistory.push({role:'user',text});
+  const area = document.getElementById('chat-area');
+  if(area) area.innerHTML += `<div class="msg-user">${text}</div>`;
+  // Find best response
+  const low = text.toLowerCase();
+  let resp = RESPONSES.default;
+  if(low.includes('peony')||low.includes('peonie')) resp = RESPONSES.peony;
+  else if(low.includes('rose')) resp = RESPONSES.rose;
+  else if(low.includes('season')||low.includes('right now')) resp = RESPONSES.season;
+  else if(low.includes('proposal')||low.includes('engage')||low.includes('boda')) resp = RESPONSES.proposal;
+  else if(low.includes('colour')||low.includes('color')||low.includes('palette')) resp = RESPONSES.colour;
+  else if(low.includes('combin')||low.includes('pair')||low.includes('goes with')||low.includes('work with')) resp = RESPONSES.combine;
+  setTimeout(()=>{
+    chatHistory.push({role:'ai',text:resp[0]});
+    const area = document.getElementById('chat-area');
+    if(!area) return;
+    area.innerHTML += `<div class="msg-ai">${resp[0]}</div>`;
+    if(resp[1].length>0){
+      area.innerHTML += `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">${resp[1].map(s=>`<button class="chat-chip" onclick="sendChatMsg('${s}')" style="font-size:10px;padding:5px 10px">${s}</button>`).join('')}</div>`;
+    }
+    area.scrollTop = area.scrollHeight;
+  }, 600);
+}
+
+// ---- STEP 4: TAG ----
+function renderTag(){
+  return `
+    <div class="builder-title">Your tag</div>
+    <div class="builder-subtitle">A handwritten keepsake — long after the flowers are gone.</div>
+    <div class="tag-container">
+      <div class="tag-preview-wrap">
+        <div class="tag-card" id="tag-card">
+          <div class="tag-title">With Love From</div>
+          <div class="tag-name" id="tag-name-preview">${state.signature||'Your name'}</div>
+        </div>
+      </div>
+      <div class="tag-form">
+        <label class="tag-label">Sign your name</label>
+        <input class="tag-input" id="sig-input" value="${state.signature}" oninput="updateTag(this.value)" placeholder="Your name">
+        <label class="tag-label">Add a message (optional)</label>
+        <input class="tag-input" id="msg-input" value="${state.message}" oninput="state.message=this.value" placeholder="Hope this bouquet makes the occasion special…">
+      </div>
+    </div>
+  `;
+}
+function updateTag(v){
+  state.signature = v;
+  const el = document.getElementById('tag-name-preview');
+  if(el) el.textContent = v || 'Your name';
+}
+
+// ---- STEP 5: SUMMARY ----
+function renderSummary(){
+  if(state.flowers.length===0) return `<div class="builder-title">Your order</div><p style="color:var(--text-mid);font-family:var(--serif);font-style:italic;font-size:18px;margin-top:20px">No flowers selected yet. Go back to step 1 to build your bouquet.</p>`;
+  const rows = state.flowers.map(f=>`<div class="summary-row"><span>${f.name}</span><span>€${f.price.toFixed(2)}</span></div>`).join('');
+  const wrapRow = state.wrap ? `<div class="summary-row"><span>${state.wrap.name} wrap</span><span>€${state.wrap.price.toFixed(2)}</span></div>` : '';
+  const vaseRow = state.vase ? `<div class="summary-row"><span>${state.vase.name} vase</span><span>€${state.vase.price.toFixed(2)}</span></div>` : '';
+  return `
+    <div class="builder-title">Your order</div>
+    <div class="summary-card">${rows}${wrapRow}${vaseRow}<div class="summary-row"><span>Same-day delivery</span><span>€7.00</span></div><div class="summary-total"><span>Total</span><span>€${total().toFixed(2)}</span></div></div>
+    <div class="tag-mini">
+      <div style="font-family:var(--serif);font-style:italic;font-size:18px;color:var(--burgundy)">With Love From</div>
+      <div style="font-family:var(--script);font-size:34px;color:var(--text-dark);line-height:1.1">${state.signature||'—'}</div>
+      ${state.message?`<div style="font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text-mid);margin-top:8px">"${state.message}"</div>`:''}
+    </div>
+    <button class="nav-btn primary" onclick="nextStep()" style="width:100%;padding:18px">Confirm and pay →</button>
+  `;
+}
+
+// ---- STEP 6: CONFIRMED ----
+function renderConfirmed(){
+  const order = Math.floor(Math.random()*9000+1000);
+  return `
+    <div class="confirmed-wrap">
+      <div class="confirmed-tick"><span style="color:var(--cream);font-size:36px;font-family:Georgia,serif">✓</span></div>
+      <div class="builder-title" style="text-align:center">Your bouquet is on its way</div>
+      <div class="builder-subtitle" style="text-align:center">We'll send you updates as your bouquet is assembled and delivered.</div>
+      <div class="summary-card" style="text-align:left;margin-top:24px">
+        <div style="font-size:11px;color:var(--text-mid);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">Order #${order}</div>
+        <div style="font-family:var(--serif);font-size:18px;color:var(--burgundy);margin-bottom:10px;font-weight:500">Estimated delivery</div>
+        <div style="font-size:14px;color:var(--text-dark);line-height:1.8">Today, 16:00–18:00<br>C/ Velázquez 32, Madrid<br>For Lucía</div>
+      </div>
+      ${state.message?`<div style="font-family:var(--serif);font-style:italic;font-size:16px;color:var(--burgundy);margin-top:16px;line-height:1.6">"${state.message}"</div>`:''}
+    </div>
+  `;
+}
+
+// ============ INIT ============
+renderStep();
+</script>
+</body>
+</html>
